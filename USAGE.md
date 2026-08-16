@@ -14,7 +14,7 @@ This section is for people who have **never used the bundle before, never used C
 
 It's a collection of 83 markdown files (called **skills**) that turn Claude Code into a methodical bug-hunting assistant.
 
-Without the bundle, asking Claude *"is this XSS?"* gets you a generic answer. With the bundle installed, the same question loads the `hunt-xss` skill — which contains specific detection patterns from 681+ disclosed reports, the exact payloads that have worked, and a validation gate that prevents you from filing a false-positive bug report.
+Without the bundle, asking Claude *"is this XSS?"* gets you a generic answer. With the bundle installed, the same question loads the `hunt-xss` skill — which contains specific detection patterns from 174 disclosed reports, the exact payloads that have worked, and a validation gate that prevents you from filing a false-positive bug report.
 
 You don't "learn" the bundle. You install it once, then describe what you're testing in plain English, and the relevant skill auto-loads. You read it together with Claude and follow the steps.
 

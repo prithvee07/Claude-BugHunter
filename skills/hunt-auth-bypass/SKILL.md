@@ -353,7 +353,7 @@ The following real, verified bug-bounty / coordinated-disclosure cases extend th
 
 10. **HackerOne — SAML signup domain enforcement bypass via control characters** ([H1 #2101076](https://hackerone.com/reports/2101076))
     - Subclass: partner-portal / SAML domain-binding bypass via unicode control characters
-    - Payload: new user sign-up at SAML-enforced org; append trailing control character (e.g., `\r`, ` `) to email → domain comparison normalises away, signup proceeds → unauthorised access to the org
+    - Payload: new user sign-up at SAML-enforced org; append trailing control character (e.g., `\r`, `\0`) to email → domain comparison normalises away, signup proceeds → unauthorised access to the org
     - Root cause: inconsistent unicode/control-char normalisation between domain check and identity write
     - Year: 2024 — bounty awarded (amount undisclosed)
 
@@ -403,7 +403,7 @@ No Duende.BFF-direct CVE exists. The three classes are exploitable via real-worl
 
 Cross-references for the chain:
 - `hunt-csrf` — the role-partitioned antiforgery class (the CSRF angle on the same BFF surface).
-- `hunt-subdomain-takeover` / `hunt-subdomain` — required primitive for the cookie-domain attack.
+- `hunt-subdomain` — required primitive for the cookie-domain attack (subdomain takeover).
 
 ---
 
