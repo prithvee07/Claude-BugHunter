@@ -4,15 +4,15 @@ The Claude-BugHunter bundle maps to a 6-phase workflow that supports both bug hu
 
 ## Primary view — phase-by-phase architecture
 
-84 skills mapped to 6 phases, with a 59-skill `hunt-*` sub-stack, an 8-skill enterprise-platform attack layer, integration layer, and usage decision tree. This is the main reference for "which skill do I use when?".
+87 skills mapped to 6 phases, with a 59-skill `hunt-*` sub-stack, an 11-skill enterprise-platform attack layer, integration layer, and usage decision tree. This is the main reference for "which skill do I use when?".
 
 ![architecture overview](assets/architecture-overview.svg)
 
-The "Source" column in the per-phase tables below tags each skill: **`original`** = author's work in this repo, `community` = community-contributed (v3), `vendored` = from [shuvonsec/claude-bug-bounty](https://github.com/shuvonsec/claude-bug-bounty) (MIT). Of 84 skills: 56 original, 20 community (v3), 8 vendored.
+The "Source" column in the per-phase tables below tags each skill: **`original`** = author's work in this repo, `community` = community-contributed (v3), `vendored` = from [shuvonsec/claude-bug-bounty](https://github.com/shuvonsec/claude-bug-bounty) (MIT). Of 87 skills: 59 original, 20 community (v3), 8 vendored.
 
 ## Alternate view — 3-layer capability stack
 
-The same 84 skills, regrouped by **role in an engagement** rather than by phase. Methodology + Recon (bottom) feeds the Hunt Arsenal (middle), which produces findings that flow up through Ship It (top) to a paid submission or client deliverable.
+The same 87 skills, regrouped by **role in an engagement** rather than by phase. Methodology + Recon (bottom) feeds the Hunt Arsenal (middle), which produces findings that flow up through Ship It (top) to a paid submission or client deliverable.
 
 ![capability map](assets/capability-map.svg)
 
@@ -103,9 +103,9 @@ Plus alternates: `hunt-cache-poison`, `hunt-race-condition`, `hunt-subdomain`. P
 
 **How auto-triggering works**: just describe what you're testing — e.g., *"I see a `?url=` parameter on this endpoint"* — and Claude loads only `hunt-ssrf`. You don't invoke them by name.
 
-### Enterprise platform attack (Phase 3 expansion — 8 skills)
+### Enterprise platform attack (Phase 3 expansion — 11 skills)
 
-External red-team engagements against enterprise estates need attack chains for full platform stacks, not just webapps. These 8 skills extend Phase 3 with current 2024-2026 CVE chains and platform-specific tradecraft.
+External red-team engagements against enterprise estates need attack chains for full platform stacks, not just webapps. These 11 skills extend Phase 3 with current 2024-2026 CVE chains and platform-specific tradecraft.
 
 | Skill | Source | Purpose |
 |---|---|---|
@@ -113,7 +113,10 @@ External red-team engagements against enterprise estates need attack chains for 
 | **`okta-attack`** | original | Okta-as-IdP — tenant discovery, factor enum, push fatigue, FastPass abuse, OIDC redirect_uri tampering |
 | **`cloud-iam-deep`** | original | AWS / Azure / GCP IAM priv-esc — STS chaining, IMDS, K8s SA tokens, confused-deputy. Post-credential escalation model. |
 | **`vmware-vcenter-attack`** | original | vSphere / vCenter / Workspace ONE / Aria CVE chain (CVE-2021-21972 → CVE-2024-37085) |
-| **`enterprise-vpn-attack`** | original | Cisco ASA, Fortinet, Citrix NetScaler, PAN GlobalProtect, Pulse/Ivanti, SonicWall, F5 SSL VPN |
+| **`enterprise-vpn-attack`** | original | Cisco ASA, Fortinet, Citrix NetScaler, PAN GlobalProtect, Pulse/Ivanti, SonicWall, F5 SSL VPN — fingerprinting + multi-vendor CVE matrix |
+| **`citrix-netscaler-deep`** | original | NetScaler ADC/Gateway deep exploitation — CitrixBleed (CVE-2023-4966) session hijack, CitrixBleed 2 (CVE-2025-5777), Shitrix (CVE-2019-19781), nFactor abuse, AAA credential exposure |
+| **`f5-bigip-attack`** | original | F5 BIG-IP deep exploitation — TMUI RCE (CVE-2020-5902), iControl REST bypass (CVE-2022-1388), BIGipServer persistence-cookie decoding for internal IP mapping |
+| **`ad-cs-attack`** | original | AD Certificate Services abuse, external-only slice — ESC8 NTLM relay to Web Enrollment, NDES/SCEP challenge-password exposure. Explicitly stops short of internal PKINIT/DCSync tradecraft. |
 | **`apk-redteam-pipeline`** | original | Android APK red-team pipeline — acquisition → jadx → secret grep → Frida instrumentation |
 | **`ios-redteam-pipeline`** | original | iOS red-team pipeline — IPA acquisition, decryption, class-dump, keychain/ATS/pinning analysis, Frida/objection instrumentation |
 | **`supply-chain-attack-recon`** | original | Dep-confusion, GH Actions injection, SBOM mining, container registry exposure (recon only, no publish-step) |

@@ -1,6 +1,6 @@
 # Claude-BugHunter — Usage Guide
 
-A practical guide to using the 84-skill Claude-BugHunter bundle for bug hunting (bounty programs, authorized pentesting, CTFs, vuln research) **and external red-team engagements** against enterprise targets. This document covers what's in the bundle, how it composes, and how to use it on a real engagement from intake through paid bounty (or final client deliverable).
+A practical guide to using the 87-skill Claude-BugHunter bundle for bug hunting (bounty programs, authorized pentesting, CTFs, vuln research) **and external red-team engagements** against enterprise targets. This document covers what's in the bundle, how it composes, and how to use it on a real engagement from intake through paid bounty (or final client deliverable).
 
 > Built and validated through authorized red-team and bug-bounty engagements — exposed four bug-bounty capability gaps and five additional gaps around platform attack chains, mid-engagement IR detection, and client-facing reporting. The final stack documented here addresses both modes.
 
@@ -12,7 +12,7 @@ This section is for people who have **never used the bundle before, never used C
 
 ### What is this bundle, in plain English?
 
-It's a collection of 84 markdown files (called **skills**) that turn Claude Code into a methodical bug-hunting assistant.
+It's a collection of 87 markdown files (called **skills**) that turn Claude Code into a methodical bug-hunting assistant.
 
 Without the bundle, asking Claude *"is this XSS?"* gets you a generic answer. With the bundle installed, the same question loads the `hunt-xss` skill — which contains specific detection patterns from 174 disclosed reports, the exact payloads that have worked, and a validation gate that prevents you from filing a false-positive bug report.
 
@@ -31,7 +31,7 @@ You don't "learn" the bundle. You install it once, then describe what you're tes
 - ❌ You don't need to know how to write exploits. The skills include working payloads.
 - ❌ You don't need to know Burp Suite. It's optional. Skills work with curl + browser.
 - ❌ You don't need a bug bounty account yet. You can practice on OWASP Juice Shop first.
-- ❌ You don't need to read all 84 skills. They auto-load when relevant.
+- ❌ You don't need to read all 87 skills. They auto-load when relevant.
 - ❌ You don't need Python beyond `python --version` working (run `python3 --version` on macOS/Linux).
 
 ### Your first 30 minutes
@@ -45,7 +45,7 @@ mkdir -p ~/security-research && cd ~/security-research
 git clone https://github.com/elementalsouls/Claude-BugHunter.git
 cd Claude-BugHunter
 
-# 2. Install (copies 84 skills + 15 commands into Claude Code)
+# 2. Install (copies 87 skills + 15 commands into Claude Code)
 bash scripts/install.sh
 
 # 3. Reload your shell so the 'hunt' command becomes available
@@ -63,7 +63,7 @@ cd "$HOME\security-research"
 git clone https://github.com/elementalsouls/Claude-BugHunter.git
 cd Claude-BugHunter
 
-# 2. Install (copies 84 skills + 15 commands into Claude Code)
+# 2. Install (copies 87 skills + 15 commands into Claude Code)
 pwsh ./scripts/install.ps1
 
 # 3. Reload your profile so the 'hunt' command becomes available
@@ -168,7 +168,7 @@ See [docs/architecture.md](docs/architecture.md) for a more detailed breakdown.
 
 ---
 
-## 2. Skill inventory (84 skills total)
+## 2. Skill inventory (87 skills total)
 
 ### Workflow skills — the spine of any engagement
 
@@ -226,7 +226,7 @@ Plus `hunt-dispatch` — the meta-router that the `/hunt` slash command uses to 
 
 **How auto-triggering works**: just describe what you're testing — e.g., *"I see a `?url=` parameter on this endpoint"* — and Claude loads only `hunt-ssrf`. You don't invoke them by name. The skill matcher looks at your prose and triggers based on the description field.
 
-### Enterprise platform attack — 7 skills (red-team layer)
+### Enterprise platform attack — 11 skills (red-team layer)
 
 Required for external red-team work where targets are full enterprise estates rather than a single webapp.
 
@@ -236,8 +236,12 @@ Required for external red-team work where targets are full enterprise estates ra
 | `okta-attack` | Okta-as-IdP — tenant discovery, factor enum, push fatigue, FastPass abuse, OIDC redirect_uri tampering |
 | `cloud-iam-deep` | AWS / Azure / GCP IAM priv-esc — STS chaining, IMDS, K8s SA tokens, confused-deputy |
 | `vmware-vcenter-attack` | vSphere / vCenter / Workspace ONE / Aria CVE chain (CVE-2021-21972 → CVE-2024-37085) |
-| `enterprise-vpn-attack` | SSL VPN appliances — Cisco ASA, Fortinet, Citrix NetScaler, PAN GlobalProtect, Pulse/Ivanti, SonicWall, F5 |
+| `enterprise-vpn-attack` | SSL VPN appliances — Cisco ASA, Fortinet, Citrix NetScaler, PAN GlobalProtect, Pulse/Ivanti, SonicWall, F5 — fingerprinting + multi-vendor CVE matrix |
+| `citrix-netscaler-deep` | NetScaler ADC/Gateway deep exploitation — CitrixBleed session hijack, Shitrix, nFactor abuse, AAA credential exposure |
+| `f5-bigip-attack` | F5 BIG-IP deep exploitation — TMUI/iControl REST RCE, BIGipServer persistence-cookie decoding for internal IP mapping |
+| `ad-cs-attack` | AD Certificate Services abuse, external-only — ESC8 NTLM relay to Web Enrollment, NDES/SCEP exposure |
 | `apk-redteam-pipeline` | Android APK acquisition → jadx → secret grep → Frida instrumentation |
+| `ios-redteam-pipeline` | iOS IPA acquisition, decryption, class-dump, keychain/ATS/pinning analysis, Frida/objection instrumentation |
 | `supply-chain-attack-recon` | Dep-confusion, GH Actions injection, SBOM mining, container registry exposure |
 
 ### Red-team tradecraft — 2 skills
@@ -399,7 +403,7 @@ Cross-reference this UUID in any chained submissions you file later.
 If another pentester wants to replicate this stack, the install steps are in [INSTALL.md](INSTALL.md). The short version:
 
 1. Clone this repo
-2. Run the installer — `bash scripts/install.sh` (macOS/Linux) or `pwsh ./scripts/install.ps1` (Windows) — installs all 84 skills, 15 commands, and the `hunt` scaffold in one step
+2. Run the installer — `bash scripts/install.sh` (macOS/Linux) or `pwsh ./scripts/install.ps1` (Windows) — installs all 87 skills, 15 commands, and the `hunt` scaffold in one step
 3. Set up Burp MCP (BApp Store extension + `claude mcp add burp ...`)
 4. (Optional) Refresh upstream snapshots via `./scripts/install-community-skills.sh` (macOS/Linux) or `pwsh ./scripts/install-community-skills.ps1` (Windows)
 5. (Optional) Set up the skill regenerator with Anthropic + H1 API keys

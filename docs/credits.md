@@ -10,11 +10,11 @@ This is a **bundle**: skills and commands are vendored directly into `skills/` a
 
 | Category | Count | Source |
 |---|---|---|
-| **Original / personally-curated skills** | 56 | This repo |
+| **Original / personally-curated skills** | 59 | This repo |
 | Community-contributed skills (v3) | 20 | community PRs (e.g. #7) |
 | Vendored foundation skills | 8 | shuvonsec/claude-bug-bounty (MIT) |
 | Vendored slash commands | 12 | shuvonsec/claude-bug-bounty (MIT) |
-| **Total** | 84 skills + 15 commands | |
+| **Total** | 87 skills + 15 commands | |
 
 ---
 
@@ -64,7 +64,11 @@ Built from authorized red-team engagements (enterprise targets including on-prem
 - **`cloud-iam-deep`** — AWS / Azure / GCP IAM red-team post-credential model. 24+ AWS, 8+ Azure, 6+ GCP priv-esc patterns. Built for the "recon yielded a credential, what does it grant" workflow.
 - **`vmware-vcenter-attack`** — vSphere / vCenter / Workspace ONE / Aria external attack matrix. Internet-exposed only.
 - **`enterprise-vpn-attack`** — Cisco ASA, Fortinet, Citrix NetScaler, PAN GlobalProtect, Pulse/Ivanti, SonicWall, F5 — versioning, CVE matrix 2018-2026, AAA backend identification, default credentials, config-disclosure paths.
+- **`citrix-netscaler-deep`** — NetScaler ADC/Gateway exploitation tradecraft beyond fingerprinting: CitrixBleed (CVE-2023-4966) session-token theft/hijack, CitrixBleed 2 (CVE-2025-5777), Shitrix (CVE-2019-19781), CVE-2023-3519, CVE-2022-27518, nFactor abuse, AAA bind-credential exposure, NetScaler Console/ADM. Built from public Citrix security bulletins and CISA/NSA advisories.
+- **`f5-bigip-attack`** — F5 BIG-IP exploitation tradecraft beyond fingerprinting: TMUI RCE (CVE-2020-5902), iControl REST auth bypass (CVE-2022-1388), the Configuration-utility chain (CVE-2023-46747/CVE-2023-46748), BIGipServer persistence-cookie decoding for internal-network mapping. Built from public F5 advisories and CISA KEV.
+- **`ad-cs-attack`** — Active Directory Certificate Services abuse, deliberately scoped to the externally-reachable slice only (ESC8 NTLM relay to internet-facing Web Enrollment, NDES/SCEP challenge-password exposure) — explicitly excludes internal PKINIT/DCSync/Certipy tradecraft per the bundle's external-only boundary. Built from the public "Certified Pre-Owned" (SpecterOps) research.
 - **`apk-redteam-pipeline`** — End-to-end Android APK pipeline. Multiple APKs processed manually during authorized work; hardcoded JWT + internal API endpoints recovered.
+- **`ios-redteam-pipeline`** — End-to-end iOS red-team pipeline: IPA acquisition/decryption, class-dump, keychain/ATS/pinning analysis, Frida/objection instrumentation.
 - **`supply-chain-attack-recon`** — Recon and identification ONLY — actual package publishing / typosquat attacks require explicit written sign-off because they can affect entire npm/PyPI ecosystems.
 - **`hunt-sharepoint`** — SharePoint Server 2013–Subscription Edition on-prem farms. Anonymous endpoint enum, legacy SOAP login bypass, ToolShell precondition chain (CVE-2025-53770), SafeControl reflection enumeration, NTLM Type-2 disclosure, custom-zone Forms auth bridging. Built from authorized engagement against an EoL SharePoint farm.
 - **`hunt-aspnet`** — ASP.NET-specific surface. ViewState deserialization, machineKey recovery, dual-parser MAC-bypass anti-pattern, request-validator bypass. Same SharePoint engagement.
@@ -79,7 +83,7 @@ Built from authorized red-team engagements (enterprise targets including on-prem
 ### Tooling and docs
 
 - **`hunt <target>` command** — Engagement-folder scaffolding: creates `~/Targets/<name>/` with `CLAUDE.md`, `scope.md`, `findings/`, `evidence/`, `submissions.txt`, `notes.md`, and a sensible `.gitignore` for engagement artifacts. Ships as `scripts/hunt.sh` (bash) and `scripts/hunt.ps1` (PowerShell).
-- **Bundle packaging** — Single-step installer that copies all 84 skills, 15 commands, and the hunt scaffold into `~/.claude/`: `scripts/install.sh` (macOS/Linux) and `scripts/install.ps1` (Windows/PowerShell).
+- **Bundle packaging** — Single-step installer that copies all 87 skills, 15 commands, and the hunt scaffold into `~/.claude/`: `scripts/install.sh` (macOS/Linux) and `scripts/install.ps1` (Windows/PowerShell).
 - **Autopilot ledger (`engine/memory.py`) + the `/remember`, `/memory-gc`, `/pickup` commands** — Original design and implementation (cross-engagement capture + skip-decision for the engine hunt loop). Not derived from any external memory implementation.
 - **`assets/banner-v2.svg`** — Hand-coded SVG banner.
 - **Documentation** — `README.md`, `INSTALL.md`, `USAGE.md`, `CONTRIBUTING.md`, `docs/architecture.md`, this credits file.

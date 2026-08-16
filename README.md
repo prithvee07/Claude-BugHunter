@@ -2,7 +2,7 @@
 
 # claude-bughunter
 
-> A self-contained Claude skill bundle for bug hunting and external red-team work · **84 skills** · 15 slash commands · **926 disclosed-report patterns** across 59 `hunt-*` vulnerability classes · enterprise identity + infrastructure attack matrices · engagement-folder scaffolding · Burp MCP integration · battle-tested across authorized red-team and bug-hunting engagements, plus public training platforms (DVWA, OWASP Juice Shop, Hacker101, testphp.vulnweb.com).
+> A self-contained Claude skill bundle for bug hunting and external red-team work · **87 skills** · 15 slash commands · **926 disclosed-report patterns** across 59 `hunt-*` vulnerability classes · enterprise identity + infrastructure attack matrices · engagement-folder scaffolding · Burp MCP integration · battle-tested across authorized red-team and bug-hunting engagements, plus public training platforms (DVWA, OWASP Juice Shop, Hacker101, testphp.vulnweb.com).
 
 Built by **[Sachin Sharma](https://www.linkedin.com/in/sachinsharma8080/)** — Bug Hunting & GenAI Security Research.
 
@@ -43,7 +43,7 @@ All triggered automatically by topic — describe what you're testing in plain E
 /plugin install claude-bughunter@elementalsouls
 ```
 
-All 84 skills + 15 commands load namespaced under `claude-bughunter:` and update when you bump the plugin version — no files copied into `~/.claude/`.
+All 87 skills + 15 commands load namespaced under `claude-bughunter:` and update when you bump the plugin version — no files copied into `~/.claude/`.
 
 **Option B — copy install (no plugin system / pin to a clone):**
 
@@ -64,7 +64,7 @@ Both copy the skills + commands into `~/.claude/` (macOS/Linux) or `%USERPROFILE
 
 **What each install path gives you:**
 
-| Path | 84 skills + 15 slash commands | `cbh` CLI | `hunt` scaffolder |
+| Path | 87 skills + 15 slash commands | `cbh` CLI | `hunt` scaffolder |
 |---|---|---|---|
 | **A — plugin** | ✅ namespaced under `claude-bughunter:` | ➕ separate `pipx install` | ❌ clone-only |
 | **B — copy install** | ✅ copied into `~/.claude/` | ✅ from the clone | ✅ from the clone |
@@ -145,7 +145,7 @@ This bundle covers the **external attack surface** — anything reachable from t
 
 ### Out of scope (deliberate — not gaps, design decisions)
 
-- **Internal Active Directory attacks** — BloodHound, Kerberoasting, ASREProast, DCSync, Pass-the-Hash, AD CS abuse, ntlmrelayx, Responder, PetitPotam, etc. Different operational risk profile; needs different tooling and judgment. **Future bundle, not this one.**
+- **Internal Active Directory attacks** — BloodHound, Kerberoasting, ASREProast, DCSync, Pass-the-Hash, ntlmrelayx, Responder, PetitPotam, etc. Different operational risk profile; needs different tooling and judgment. **Future bundle, not this one.** The one narrow exception is `ad-cs-attack`, which covers *only* the externally-reachable slice of AD CS (NTLM relay to an internet-facing Web Enrollment endpoint, arbitrary-SAN templates, NDES/SCEP challenge-password exposure) — it stops at "certificate obtained" and explicitly does not cover internal ESC2-ESC16 privesc, PKINIT/Rubeus/Certipy usage, or any post-certificate domain escalation, which remain out of scope here.
 - **C2 frameworks** — Cobalt Strike, Sliver, Mythic, Havoc, BRC4 tradecraft. Out of scope for external-only engagement model.
 - **Post-exploit / persistence / lateral** — Mimikatz/comsvcs LSASS dumping, golden/silver tickets, named-pipe impersonation, persistence (registry, scheduled tasks, WMI events, COM hijacking), token theft. These start after the perimeter has already broken — different bundle territory.
 - **Evasion** — AMSI bypass, ETW patching, AV/EDR bypass. Tied to C2 tradecraft above.
@@ -158,12 +158,12 @@ If you're running an internal red team that includes domain-takeover chains via 
 
 ## What's inside
 
-**84 skills**, auto-loaded by topic — no invocation by name. Coverage across the external attack surface:
+**87 skills**, auto-loaded by topic — no invocation by name. Coverage across the external attack surface:
 
 | Category | # | Examples |
 |---|---|---|
 | Hunt — web app vuln classes | 59 | XSS, SQLi, SSRF, IDOR, LFI, SSTI, XXE, CSRF, CORS, open-redirect, SharePoint, ASP.NET/NTLM |
-| Enterprise platform attack ★ | 10 | M365/Entra, Okta, cloud-IAM-deep, vCenter, enterprise VPN, APK/iOS red-team pipelines, supply-chain recon |
+| Enterprise platform attack ★ | 13 | M365/Entra, Okta, cloud-IAM-deep, vCenter, enterprise VPN, Citrix NetScaler deep-dive, F5 BIG-IP, AD CS (external-only), APK/iOS red-team pipelines, supply-chain recon |
 | Reporting & validation | 6 | triage-validation, evidence-hygiene, report-writing, bugcrowd-reporting |
 | Recon & OSINT | 5 | web2-recon, offensive-osint, osint-methodology, recon-scope-triage |
 | Methodology & mindset | 4 | bb-methodology, bug-bounty, redteam-mindset, bb-local-toolkit |
@@ -264,7 +264,7 @@ The per-class `hunt-*` skills address gap-zero (*"what should I look for in weba
 - [x] Industry-specific hunt skills — `hunt-fintech-graphql`, `hunt-healthcare-fhir` shipped; `hunt-gov-compliance` still open
 - [ ] Program-rules-parser skill — auto-generate structured `scope.md` from program text
 - [ ] Refresh `hunt-*` skills with newer disclosed reports (re-run `public-skills-builder`)
-- [ ] Additional enterprise-platform skills — `citrix-netscaler-deep`, `f5-bigip-attack`, `ad-cs-attack` (AD Certificate Services)
+- [x] Additional enterprise-platform skills — `citrix-netscaler-deep`, `f5-bigip-attack`, `ad-cs-attack` (AD Certificate Services, external-only scope) shipped
 - [ ] Refresh enterprise-VPN CVE matrix quarterly to track 2026 advisories
 - [ ] Update architecture SVG to include the 7-skill enterprise-platform layer
 
@@ -295,7 +295,7 @@ Operational tradecraft accumulated across bug-bounty engagements and authorized 
 
 **Sister project:** [Claude-OSINT](https://github.com/elementalsouls/Claude-OSINT) — paired skills for the recon phase that this bundle picks up after. Its two recon skills (`offensive-osint`, `osint-methodology`) are **canonically maintained here** and re-exported there, so the two are byte-identical. **Installing both is safe:** each bundle's installer (`install.sh` on macOS/Linux, `install.ps1` on Windows) records a manifest, the script skips re-copying an identical skill, and `--uninstall` keeps any skill the other bundle still owns — uninstalling one never breaks the other.
 
-**Vendored foundation:** [shuvonsec/claude-bug-bounty](https://github.com/shuvonsec/claude-bug-bounty) — methodology, validation, reporting, payload library (8 of 84 skills + 15 slash commands)
+**Vendored foundation:** [shuvonsec/claude-bug-bounty](https://github.com/shuvonsec/claude-bug-bounty) — methodology, validation, reporting, payload library (8 of 87 skills + 15 slash commands)
 
 **Generator tool used (not vendored):** [shuvonsec/public-skills-builder](https://github.com/shuvonsec/public-skills-builder) — used to scaffold per-class skills from H1 disclosed reports
 

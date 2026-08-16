@@ -332,6 +332,8 @@ Add `-as` (auto-scan) for broader vuln coverage but slower.
 
 - `m365-entra-attack` — when AAA backend is Entra SAML; cred-spray strategy carries over
 - `hunt-saml` — XSW / signature-stripping if SAML SP is misconfigured
+- `citrix-netscaler-deep` — once this skill fingerprints NetScaler ADC/Gateway + build, hand off here for CitrixBleed/CitrixBleed 2 session-hijack tradecraft, Shitrix, nFactor abuse, and AAA credential extraction — this skill does not repeat that depth
+- `f5-bigip-attack` — once this skill fingerprints F5 BIG-IP, hand off here for TMUI/iControl REST RCE detail and BIGipServer persistence-cookie decoding
 - `mid-engagement-ir-detection` — appliances generate noisy logs; watch for IPS rules being deployed mid-engagement
 - `redteam-mindset` — banner-stripped ≠ "not vulnerable"; keep digging via behavioral fingerprints
 
@@ -350,6 +352,8 @@ Add `-as` (auto-scan) for broader vuln coverage but slower.
 ## Related Skills & Chains
 
 - **`hunt-rce`** — Every major VPN appliance (Pulse Secure, Fortinet, Citrix, Ivanti, Palo Alto) has shipped pre-auth path-traversal-to-RCE in the last 24 months. Chain primitive: VPN appliance CVE (e.g., Ivanti ICS CVE-2024-21887, Citrix Bleed CVE-2023-4966, Fortinet CVE-2024-21762) → `hunt-rce` pre-auth path traversal → arbitrary file write into web-root → request the file → web-shell as `root` → VPN config + LDAP bind credentials extracted.
+- **`citrix-netscaler-deep`** / **`f5-bigip-attack`** — this skill's CVE matrix confirms *which* NetScaler/BIG-IP build is present; the vendor-specific skills own the actual exploitation depth (CitrixBleed session-token hijack that bypasses MFA entirely, F5 BIGipServer cookie decoding to enumerate internal pool-member IPs) and the AAA/LDAP bind-credential extraction technique once shell is achieved on either platform.
+- **`ad-cs-attack`** — if the VPN appliance's AAA backend LDAP-binds into an AD forest that also runs an internet-facing AD CS Web Enrollment endpoint (common in hybrid-identity estates), a credential recovered from this skill's config-disclosure step is a candidate for testing `ad-cs-attack`'s ESC8 relay path, subject to separate scope confirmation.
 - **`hunt-saml`** — VPN SAML SP misconfig persists even on fully-patched appliances. Chain primitive: appliance patched against latest CVE but `/saml/metadata` reachable → IdP fingerprinted → `hunt-saml` XSW or comment-injection against IdP → forged assertion → VPN session established without password/MFA.
 - **`vmware-vcenter-attack`** — Post-VPN-foothold the natural next pivot is vCenter. Chain primitive: VPN web-shell → cred extraction from VPN appliance config (LDAP bind, RADIUS shared secret) → reuse against internal vCenter → if scope permits, `vmware-vcenter-attack` → datacenter takeover.
 - **`hunt-ntlm-info`** — Some VPN appliances expose anonymous NTLM on management paths. Chain primitive: VPN admin portal NTLM Type-2 capture → `hunt-ntlm-info` AV_PAIR decode → internal AD forest name → `m365-entra-attack` Entra spray on synced tenant.
