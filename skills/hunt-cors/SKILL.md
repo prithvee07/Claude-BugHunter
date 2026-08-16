@@ -2,6 +2,7 @@
 name: hunt-cors
 description: "Hunt CORS Misconfiguration — origin-reflection with credentials, null-origin trust, subdomain-regex bypass (unanchored vs unescaped-dot vs prefix-only), pre-flight (OPTIONS) gating bypass, postMessage origin checks. High only when an attacker-controlled origin can perform a CREDENTIALED cross-origin read of sensitive data and you have proven it in a browser. Use when testing API endpoints, SPAs, or any app emitting Access-Control-* headers."
 sources: hackerone_public
+report_count: 0
 ---
 
 # HUNT-CORS — Cross-Origin Resource Sharing Misconfiguration
